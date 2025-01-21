@@ -64,7 +64,6 @@ const WorldMap = ({ projectionName = "geoNaturalEarth2" }) => {
     const [ref, dms] = useChartDimensions({})
 
     const svgRef = useRef();
-    const didMountRef = useRef(false);
 
     // this is the definition for the whole Earth
     const sphere = { type: "Sphere" }
@@ -89,20 +88,15 @@ const WorldMap = ({ projectionName = "geoNaturalEarth2" }) => {
     const zoom = useMemo(() => d3.zoom().scaleExtent([1, maxScale]).on("zoom", (e) => {
         console.log('zooming', e.transform);
         setTransform(e.transform);
-    }), [d3Svg]);
+    }), []);
 
     
     useEffect(() => {
-        if (!d3Svg || didMountRef.current) {
+        if (!d3Svg) {
             return;
         }
         console.log('attaching zoom');
         d3Svg.call(zoom);
-        didMountRef.current = true;
-
-        return () => {
-            didMountRef.current = false;
-        }
     }, [d3Svg, zoom]);
     
 
