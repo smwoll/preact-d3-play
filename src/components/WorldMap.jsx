@@ -83,7 +83,7 @@ const WorldMap = ({ projectionName = "geoNaturalEarth2" }) => {
 
     const [transform, setTransform] = useState(defaultTransform);
 
-    const d3Svg = useMemo(() => d3.select(svgRef.current), [svgRef.current]);
+    const d3Svg = useMemo(() => svgRef.current ? d3.select(svgRef.current) : null, [svgRef.current]);
 
     const zoom = useMemo(() => d3.zoom().scaleExtent([1, maxScale]).on("zoom", (e) => {
         console.log('zooming', e.transform);
@@ -95,7 +95,7 @@ const WorldMap = ({ projectionName = "geoNaturalEarth2" }) => {
         if (!d3Svg) {
             return;
         }
-        console.log('attaching zoom');
+        console.log('attaching zoom', d3Svg);
         d3Svg.call(zoom);
     }, [d3Svg, zoom]);
     
